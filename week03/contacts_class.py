@@ -1,7 +1,21 @@
 import json
-import os
+import shutil
+from pathlib import Path
 
-FILE_NAME = "contacts_class.json"
+
+#当前脚本所在目录
+
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR/"data"
+BACKUP_DIR = DATA_DIR/"backup"
+FILE_NAME = DATA_DIR/"contacts.json"
+BACKUP_FILE = BACKUP_DIR/"contacts_backup.json"
+
+#确保目录存在
+
+DATA_DIR.mkdir(parents = True,exist_ok = True)
+BACKUP_DIR.mkdir(parents = True,exist_ok = True)
+
 
 class Contact:
 	"""联系人基类"""
@@ -84,19 +98,29 @@ class ContactManager:
 			print("无效编号")
 	def save(self):
 		try:
-			with open(FILE_NAME,"w",encoding = "utf-8") as f:
-				json.dump([c.to_dict() for c in self.contacts],f,ensure_ascii = False,indent = 4)
+			#备份：如果主文件存在，先复制一份
+			if FILE_NAME.exists():
+				shutil.copy(FILE_NAME,BACKUP_FILE)
+				print(f"已备份到{BACKUP_FILE}")
+			data = [c.to_dict() for c in self.contacts]
+			FILE_NAME.write_text(
+				json.dumps(data,ensure_ascii = False,indent = 4),
+				encoding = "utf-8"
+			)
 		except Exception as e:
 			print(f"保存失败：{e}")
 	def load(self):
-		if not os.path.exists(FILE_NAME):
+		if not FILE_NAME.exists():
+			print("暂无联系人文件，跳过加载")
 			return
 		try:
-			with open(FILE_NAME,"r",encoding = "utf-8") as f:
-				data = json.load(f)
+			text = FILE_NAME.read_text(encoding = "utf-8")
+			data = json.loads(text)
 			if isinstance(data,list):
 				self.contacts = []
 				for d in data:
+					if d is None:
+						continue
 					ctype = d.get("type","contact")
 					if ctype == "personal":
 						self.contacts.append(PersonalContact.from_dict(d))

@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+organizer.log
+test_data/

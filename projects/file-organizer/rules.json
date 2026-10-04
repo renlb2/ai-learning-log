@@ -1,0 +1,10 @@
+{
+    "python":[".py",".ipynb"],
+    "web":[".html",".css",".js"],
+    "data":[".json",".csv",".xml",".yaml",".yml"],
+    "docs":[".md",".txt",".pdf",".docx",".doc"],
+    "images":[".jpg",".jpeg",".png",".gif",".svg",".webp"],
+    "archives":[".zip",".tar",".gz",".7z",".rar"],
+    "video":[".mp4",".mkv",".mov",".avi"],
+    "audio":[".mp3",".wav",".flac",".m4a"]
+}

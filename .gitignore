@@ -1,3 +1,19 @@
-week04/organize.log
+
+__pycache__/
+*.pyc
+*.save
 .venv/
+
+# 测试目录
+week04/test_organize/
+
+# 数据文件
+week02/*.json
+week03/data/backup/
 week05/titanic.csv
+week05/scores.csv
+
+# 日志
+week04/organize.log
+projects/file-organizer/organizer.log
+projects/file-organizer/test_data/
